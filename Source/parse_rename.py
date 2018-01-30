@@ -17,14 +17,15 @@ def parse_notice(file, accounts, workingDir):
     os.chdir(workingDir)
     f = open(file, 'r')
 
-    BeautifulSoup("html5lib", "html.parser")
-    soup = BeautifulSoup(f.read().decode('utf-8', 'ignore'))
+    soup = BeautifulSoup(f.read().decode('utf-8', 'ignore'), 'html.parser')
     # search for customer number
     cue_word = u'חוקל'
 
+    # soup.get_text("|", strip=True)
     lines = string.split(soup.text, "\n")
     short_name = "Not Found"
     datePrefix = "00000000"
+    line_nr = 0
     for l in lines:
         if l.find(cue_word) > 0:
             c1 = l.find("/")
@@ -32,10 +33,14 @@ def parse_notice(file, accounts, workingDir):
             r = accounts.lookup_Table(Customer=cust_str)
             if len(r) >0:
                 short_name = r["ShortName"]
+                line_nr = lines.index(l)
+                match = re.search(r'\d\d/\d\d/\d\d', lines[line_nr-1])
+                if match:
+                    datePrefix = '20' + match.string[6:8] + match.string[3:5] + match.string[0:2]  # 20YYMMDD
+                else:
+                    print >>sys.stderr, 'Parsing the date failed in file %s' % file
                 break
-        match = re.search(r'\d\d/\d\d/\d\d', l[0:8])
-        if match:
-            datePrefix = '20' + l[6:8] + l[3:5] + l[0:2] #20YYMMDD
+
 
     os.chdir(origDir)
     return (short_name, datePrefix)

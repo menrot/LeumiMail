@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sys, os
 from parse_rename import parse_notice
 import webbrowser
