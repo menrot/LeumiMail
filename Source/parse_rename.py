@@ -28,15 +28,26 @@ def parse_notice(file, accounts, workingDir):
     line_nr = 0
     for l in lines:
         if l.find(cue_word) > 0:
-            c1 = l.find("/")
-            cust_str = l[(c1-5):(c1+3)]
+            span = [x.span() for x in re.finditer(r'\d*\d\d\d\d\d/\d\d', l)]
+            cust_str = l[span[0][0]:span[0][1]]
             r = accounts.lookup_Table(Customer=cust_str)
             if len(r) >0:
                 short_name = r["ShortName"]
                 line_nr = lines.index(l)
-                match = re.search(r'\d\d/\d\d/\d\d', lines[line_nr-1])
-                if match:
-                    datePrefix = '20' + match.string[6:8] + match.string[3:5] + match.string[0:2]  # 20YYMMDD
+                line_nr_seek = 1
+                span = [x.span() for x in re.finditer(r'\d\d/\d\d/\d\d', l)]
+                while not span:
+                    # search for date in previous lines
+                    l = lines[line_nr-line_nr_seek]
+                    if line_nr_seek > 5:
+                        break
+                    else:
+                        line_nr_seek = line_nr_seek + 1
+                        span = [x.span() for x in re.finditer(r'\d\d/\d\d/\d\d', l)]
+
+                if span:
+                    match = l[span[0][0]:span[0][1]]
+                    datePrefix = '20' + match[6:8] + match[3:5] + match[0:2]  # 20YYMMDD
                 else:
                     print >>sys.stderr, 'Parsing the date failed in file %s' % file
                 break
