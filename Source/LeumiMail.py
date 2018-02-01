@@ -32,6 +32,8 @@ parser.add_argument('-P', dest='Dpwd', action='store',
                     help='PDF files password')
 parser.add_argument('-Nemail', dest='EmailProcess', action='store_false',   #By default - process email
                     help='When set-gmail is not accessed and recent files are used')
+parser.add_argument('-downloaded', dest='downloaded', action='store_true',   #By default - not downloaded
+                    help='When set-process messages that were donwloaded to downlowd folder')
 
 MyArgs = vars(parser.parse_args())
 
@@ -39,15 +41,20 @@ MyArgs = vars(parser.parse_args())
 locals().update(MyArgs)
 
 #Interactive
-if Gpwd == None:
-    Gpwd = getpass.getpass("Enter your gmail password: ")
-if Dpwd == None:
-    Dpwd = getpass.getpass("Enter your Doc password: ")
+if downloaded:
+    EmailProcess = False
+else:
+    if EmailProcess:
+        if Gpwd == None:
+            Gpwd = getpass.getpass("Enter your gmail password: ")
+    if Dpwd == None:
+        Dpwd = getpass.getpass("Enter your Doc password: ")
 
 
 workingDir = '..\\temp'  # directory where to save attachments (default: current)
 emailsDir = workingDir + "\\emails"
 attachmentsDir = workingDir + "\\attachments"
+downloadedDir = workingDir + "\\downloaded"
 accountsFile = "ListOfAccounts.csv"
 
 # Create the accounts table
@@ -55,31 +62,36 @@ Accounts = Table()
 csv_fp = open('ListOfAccounts.csv', 'rb')
 Accounts.populate_Table(csv_fp)
 
-print >>sys.stderr, 'parameters parsed %s, %s, %s, %r' % (gmailAccount, Gpwd[-3:], Dpwd[-4:], EmailProcess)
+if (not downloaded):
+
 # login to gmail account and for a selected emails, extract the attachments
 
-## Remove all files in the working environment
-if EmailProcess:
-    EraseFiles(emailsDir)
+    ## Remove all files in the working environment
+    if EmailProcess:
+        print >> sys.stderr, 'parameters parsed %s, %s, %s, %r' % (gmailAccount, Gpwd[-3:], Dpwd[-4:], EmailProcess)
+        EraseFiles(emailsDir)
 
-    DetachEmails (gmailAccount, Gpwd, workingDir + "\\emails", condition=[])
+        DetachEmails (gmailAccount, Gpwd, workingDir + "\\emails", condition=[])
 
-print >>sys.stderr, 'email logout'
-# each email attachment which is a PDF file, has its own attachment, usually HTML.
-# extract those
-EraseFiles(attachmentsDir)
-files = [f for f in os.listdir(emailsDir)]
-for f in files:
-    extractembedded(f, password=Dpwd, extractdir = attachmentsDir, emailsDir=emailsDir)
+    print >>sys.stderr, 'email logout'
+    # each email attachment which is a PDF file, has its own attachment, usually HTML.
+    # extract those
+    EraseFiles(attachmentsDir)
+    files = [f for f in os.listdir(emailsDir)]
+    for f in files:
+        extractembedded(f, password=Dpwd, extractdir = attachmentsDir, emailsDir=emailsDir)
 
-print >>sys.stderr, 'attachment extracted'
-# for each HTML - parse the file, identify the account and date, and rename the file accordingly
+    print >>sys.stderr, 'attachment extracted'
+    # for each HTML - parse the file, identify the account and date, and rename the file accordingly
 
-ProcessHTML(Accounts, attachmentsDir)
+    ProcessHTML(Accounts, attachmentsDir)
 
-print "end processing - check temp\\attachments sub direcories"
+    print "end processing - check temp\\attachments sub directories"
 
-
+else:
+    #process downloaded files
+    ProcessHTML(Accounts, downloadedDir)
+    print "end processing - check temp\\downloaded sub directories"
 
 
 # Open each file, and if approved - move to target folder based on account name
