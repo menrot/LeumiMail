@@ -102,7 +102,9 @@ ENV/
 *.csv
 /temp
 /production
-/.idea
+/source/.idea
 test.py
+/source/*.bat
+workspace.xml
 
 
