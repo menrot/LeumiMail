@@ -33,25 +33,20 @@ def ProcessHTML(Accounts, noticesDir):
                     if not os.path.exists(acc_name):
                             os.makedirs(acc_name)
                     if ordinal > 0:
-                        newF = '{0} {1}.html'.format(date_pref, ordinal)
+                        newF = '{0} {1}'.format(date_pref, ordinal)
                     else:
-                        newF = '{0} {1}.html'.format(date_pref, filename_base)
-                    while os.path.exists(os.path.join(acc_name, newF)):
-                        if ordinal == 0:
-                            newF = '{0} {1} {2}.html'.format(date_pref, ordinal, filename_base)
+                        newF = '{0} {1}'.format(date_pref, filename_base)
+                    while os.path.exists(os.path.join(acc_name, '{0}.html'.format(newF))):
                         ordinal = str(int(ordinal) + 1)
+                        if filename_base:
+                            newF = '{0} {1} {2}.html'.format(date_pref, ordinal, filename_base)
+                        else:
+                            newF = '{0} {1}'.format(date_pref, ordinal)
                         if int(ordinal) > 9:
                             print >> sys.stderr, 'Target name range exists for %s, ordinal %s in %s' % (
                                 f, ordinal, acc_name)
                             ordinal = 'check this one'
                             break
-                    if ordinal > 0:
-                        if not filename_base: # it is by email
-                           newF = '{0} {1}'.format(date_pref, ordinal)
-                        else: # not by email
-                           newF = '{0} {1} {2}'.format(date_pref, ordinal, filename_base)
-                    else: # not by email and no conflict in file name
-                            newF = '{0} {1}'.format(date_pref, filename_base)
 
                     if response == "Mark":
                        newF = '{0} UPDATE NAME'.format(newF)
