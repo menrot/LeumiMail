@@ -60,6 +60,7 @@ from MrUtils import Table
 from MrGmail import DetachEmails
 from MrPDFextract import extractembedded
 from ProcessHTML import ProcessHTML
+from MrZip import ProcessZips
 import argparse
 
 
@@ -73,7 +74,9 @@ def EraseFiles(mydir):
 
 ### Usage LeumiMail Gmail-username Gmail-password PDF-passport [NoEmail]
 parser = argparse.ArgumentParser(description='Process Leumi email from Gmail')
-parser.add_argument('gmailAccount', metavar='gmailAccount', type=str,
+#parser.add_argument('gmailAccount', metavar='gmailAccount', type=str,
+#                    help='the gmail account having the Leumi email in its Inbox')
+parser.add_argument('-e', dest='gmailAccount', action='store',
                     help='the gmail account having the Leumi email in its Inbox')
 parser.add_argument('-p', dest='Gpwd', action='store',
                     help='gmail account password')
@@ -83,15 +86,28 @@ parser.add_argument('-Nemail', dest='EmailProcess', action='store_false',  # By 
                     help='When set-gmail is not accessed and recent files are used')
 parser.add_argument('-downloaded', dest='downloaded', action='store_true',  # By default - not downloaded
                     help='When set-process messages that were donwloaded to downlowd folder')
+parser.add_argument('-Z', dest='zipInp', action='store',
+                    help='Folder of ZIP files')
 
 MyArgs = vars(parser.parse_args())
 
 # create variables
 locals().update(MyArgs)
 
+workingDir = os.path.abspath('..\\temp')  # directory where to save attachments (default: current)
+emailsDir = os.path.abspath(workingDir + "\\emails")
+attachmentsDir = os.path.abspath(workingDir + "\\attachments")
+downloadedDir = os.path.abspath(workingDir + "\\downloaded")
+accountsFile = "ListOfAccounts.csv"
+
 # Interactive
-if downloaded:
+if downloaded or gmailAccount is None:
     EmailProcess = False
+    if zipInp is None :
+        zipsDir = os.path.abspath(workingDir + "\\zips")
+    else:
+        zipsDir = zipInp
+
 else:
     if EmailProcess:
         if Gpwd is None:
@@ -99,18 +115,13 @@ else:
     if Dpwd is None:
         Dpwd = getpass.getpass("Enter your Doc password: ")
 
-workingDir = '..\\temp'  # directory where to save attachments (default: current)
-emailsDir = workingDir + "\\emails"
-attachmentsDir = workingDir + "\\attachments"
-downloadedDir = workingDir + "\\downloaded"
-accountsFile = "ListOfAccounts.csv"
 
 # Create the accounts table
 Accounts = Table()
 csv_fp = open('ListOfAccounts.csv', 'rb')
 Accounts.populate_Table(csv_fp)
 
-if (not downloaded):
+if (not downloaded) and gmailAccount is not(None):
 
     # login to gmail account and for a selected emails, extract the attachments
 
@@ -140,6 +151,9 @@ if (not downloaded):
     print "end processing - check temp\\attachments sub directories"
 
 else:
+
+    # Process the ZIP files
+    ProcessZips(zipsDir, downloadedDir)
     # process downloaded files
     ProcessHTML(Accounts, downloadedDir)
     print "end processing - check temp\\downloaded sub directories"

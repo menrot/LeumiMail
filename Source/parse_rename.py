@@ -31,7 +31,7 @@ def parse_notice(file, accounts, workingDir):
             span = [x.span() for x in re.finditer(r'\d*\d\d\d\d\d/\d\d', l)]
             cust_str = l[span[0][0]:span[0][1]]
             r = accounts.lookup_Table(Customer=cust_str)
-            if len(r) > 0:
+            if r is not(None):
                 short_name = r["ShortName"]
                 line_nr = lines.index(l)
                 line_nr_seek = 1
@@ -51,6 +51,10 @@ def parse_notice(file, accounts, workingDir):
                 else:
                     print >> sys.stderr, 'Parsing the date failed in file %s' % file
                 break
+            else:
+                print >> sys.stderr, 'Account doesn"t exist in  file %s' % file
+                break
+
 
     os.chdir(origDir)
     return (short_name, datePrefix)
