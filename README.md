@@ -1,23 +1,31 @@
 # LeumiMail
 A utility to open and organize Leumi notification received either by email or by downloading from Leumi site
 
+## Note 
+2018 03 13 Leumi discontinued the email service. As such the downloaded option is the only useful one. 
+
 ## Usage ##
 
 This utility handles the following use cases:
 
-### Email notices ###
+### zip file processing ###
 
-
-
-1. Emails are fetched from gmail account
-2. from each email the PDF attachment is fetched and downloaded
-3. from each PDF the embedded files, usually HTML, are extracted
-4. for each html it is parsed and associated with the relevant account and date
+While in the Leumi web interface - download the new emails from the inbox. The utility was updated to read these zip files, extract the notices into the relevant folder and then process them per account.
 
 ### Downloaded notices ###
 
 1. The downloaded notices should be copied to the relevant folder
 2. for each html - it is parsed and associated with the relevant account and date
+
+
+### Email notices ###
+
+Leumi stopped this service 
+
+1. Emails are fetched from gmail account
+2. from each email the PDF attachment is fetched and downloaded
+3. from each PDF the embedded files, usually HTML, are extracted
+4. for each html it is parsed and associated with the relevant account and date
 
 
 ## Environment ###
@@ -27,7 +35,8 @@ This utility handles the following use cases:
  
 	    Script
     	temp /
-    		emails
-    		attachments
+    		emails # not used anymore
+    		attachments # not used anymore
     		downloaded
+			zips
 
