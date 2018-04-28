@@ -55,14 +55,14 @@ def ProcessHTML(Accounts, noticesDir):
                         copyfile(f, os.path.join(acc_name, newF))
                             # print >> sys.stderr, 'copyfile from %s to %s in %s' % (f, newF, acc_name)
                     except Exception as e:
-                            print >> sys.stderr, 'Couldn"t copy from %s to %s in %s' % (f, newF, acc_name)
+                            print >> sys.stderr, 'Couldn"t copy from %s to %s in %s' % (f.decode('cp1255'), newF.decode('cp1255'), acc_name)
 
                 else:
-                     print >> sys.stderr, 'You asked not to save  %s' % f
+                     print >> sys.stderr, 'You asked not to save  %s' % f.decode('cp1255')
             else:
-                print >> sys.stderr, "Parsing of %s failed" % f
+                print >> sys.stderr, "Parsing of %s failed" % f.decode('cp1255')
         else: #not HTML
-            print 'Not a HTML %s' % f
+            print 'Not a HTML %s' % f.decode('cp1255')
     os.chdir(origDir)
     return
 
