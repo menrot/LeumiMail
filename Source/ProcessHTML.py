@@ -37,6 +37,7 @@ def ProcessHTML(Accounts, noticesDir):
                     else:
                         newF = '{0} {1}'.format(date_pref, filename_base)
                     while os.path.exists(os.path.join(acc_name, '{0}.html'.format(newF))):
+                        print >> sys.stderr, 'Target file %s exists. Creating it again with ordinal' % newF.decode('cp1255')
                         ordinal = str(int(ordinal) + 1)
                         if filename_base:
                             newF = '{0} {1} {2}.html'.format(date_pref, ordinal, filename_base)

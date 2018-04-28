@@ -24,8 +24,8 @@ def ProcessZips(zipsDir, downloadedDir):
 #            with zipfile.ZipFile(f) as zf:
 #                zf.extractall(downloadedDir)
         else: #not ZIP
-            print 'Not a ZIP %s' % f.decode('cp1255')
-        print >> sys.stderr, 'Zipfile %s processed. Consider deleting it' % f.decode('cp1255')
+            print >> sys.stderr,'Not a ZIP %s' % f.decode('cp1255')
+        print 'Zipfile %s processed. Consider deleting it' % f.decode('cp1255')
     os.chdir(origDir)
     return
 

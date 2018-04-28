@@ -1,52 +1,35 @@
 # -*- coding: utf-8 -*-
 
-"""LeumiMail - reads, displays and organizes Leumi notification.
+"""
+LeumiMail
 
-    Function parameters should be documented in the ``Args`` section. The name
-    of each parameter is required. The type and description of each parameter
-    is optional, but should be included if not obvious.
+    Release V4.0
+    This module is to parse and organize notices from Leumi
 
-    If \*args or \*\*kwargs are accepted,
-    they should be listed as ``*args`` and ``**kwargs``.
+    There are two main operation modes:
+    1. Receiving an encrypted email. This mode was decapitated on March 2018
+    2. Downloading the internal Leumi inbox. It creates zip file with HTML members
 
-    The format for a parameter is::
+    The program receives the following parameters
 
-        name (type): description
-            The description may span multiple lines. Following
-            lines should be indented. The "(type)" is optional.
+    -Z [location]   where the zip file exists
 
-            Multiple paragraphs are supported in parameter
-            descriptions.
+    The folder environment is as follows:
+        script
+        temp
+            zips
+            downloaded
+                account_1
+                account_2
+        emails
+        attachments
 
-    Args:
-        param1 (str): Gmail account name
+    In the script folder there has to be a CSV file describing the accounts
 
-        *args: Variable length argument list.
-        **kwargs: Arbitrary keyword arguments.
+    the emails and attachments folders are not used anymore
 
-    Returns:
-        bool: True if successful, False otherwise.
 
-        The return type is optional and may be specified at the beginning of
-        the ``Returns`` section followed by a colon.
-
-        The ``Returns`` section may span multiple lines and paragraphs.
-        Following lines should be indented to match the first line.
-
-        The ``Returns`` section supports any reStructuredText formatting,
-        including literal blocks::
-
-            {
-                'param1': param1,
-                'param2': param2
-            }
-
-    Raises:
-        AttributeError: The ``Raises`` section is a list of all exceptions
-            that are relevant to the interface.
-        ValueError: If `param2` is equal to `param1`.
-
-    """
+"""
 
 ###
 ### Read emails from leumi
@@ -89,75 +72,77 @@ parser.add_argument('-downloaded', dest='downloaded', action='store_true',  # By
 parser.add_argument('-Z', dest='zipInp', action='store',
                     help='Folder of ZIP files')
 
-MyArgs = vars(parser.parse_args())
 
-# create variables
-locals().update(MyArgs)
+if __name__ == '__main__':
 
-workingDir = os.path.abspath('..\\temp')  # directory where to save attachments (default: current)
-emailsDir = os.path.abspath(workingDir + "\\emails")
-attachmentsDir = os.path.abspath(workingDir + "\\attachments")
-downloadedDir = os.path.abspath(workingDir + "\\downloaded")
-accountsFile = "ListOfAccounts.csv"
+    print 'LeumiMail Release 4.0'   #update release number
 
-# Interactive
-if downloaded or gmailAccount is None:
-    EmailProcess = False
-    if zipInp is None :
-        zipsDir = os.path.abspath(workingDir + "\\zips")
-    else:
-        zipsDir = zipInp
+    MyArgs = vars(parser.parse_args())
 
-else:
-    if EmailProcess:
-        if Gpwd is None:
-            Gpwd = getpass.getpass("Enter your gmail password: ")
-    if Dpwd is None:
-        Dpwd = getpass.getpass("Enter your Doc password: ")
+    # create variables
+    locals().update(MyArgs)
 
+    workingDir = os.path.abspath('..\\temp')  # directory where to save attachments (default: current)
+    emailsDir = os.path.abspath(workingDir + "\\emails")
+    attachmentsDir = os.path.abspath(workingDir + "\\attachments")
+    downloadedDir = os.path.abspath(workingDir + "\\downloaded")
+    accountsFile = "ListOfAccounts.csv"
 
-# Create the accounts table
-Accounts = Table()
-csv_fp = open('ListOfAccounts.csv', 'rb')
-Accounts.populate_Table(csv_fp)
-
-if (not downloaded) and gmailAccount is not(None):
-
-    # login to gmail account and for a selected emails, extract the attachments
-
-    ## Remove all files in the working environment
-    if EmailProcess:
-        print >> sys.stderr, 'parameters parsed %s, %s, %s, %r' % (gmailAccount, Gpwd[-3:], Dpwd[-4:], EmailProcess)
-        EraseFiles(emailsDir)
-
-        if DetachEmails(gmailAccount, Gpwd, workingDir + "\\emails", condition=[]):
-            print >> sys.stderr, 'email logout'
+    # Interactive
+    if downloaded or gmailAccount is None:
+        EmailProcess = False
+        if zipInp is None:
+            zipsDir = os.path.abspath(workingDir + "\\zips")
         else:
-            print >> sys.stderr, 'Processing aborted'
-            exit(1)
+            zipsDir = zipInp
 
-    # each email attachment which is a PDF file, has its own attachment, usually HTML.
-    # extract those
-    EraseFiles(attachmentsDir)
-    files = [f for f in os.listdir(emailsDir)]
-    for f in files:
-        extractembedded(f, password=Dpwd, extractdir=attachmentsDir, emailsDir=emailsDir)
+    else:
+        if EmailProcess:
+            if Gpwd is None:
+                Gpwd = getpass.getpass("Enter your gmail password: ")
+        if Dpwd is None:
+            Dpwd = getpass.getpass("Enter your Doc password: ")
 
-    print >> sys.stderr, 'attachment extracted'
-    # for each HTML - parse the file, identify the account and date, and rename the file accordingly
+    # Create the accounts table
+    Accounts = Table()
+    csv_fp = open('ListOfAccounts.csv', 'rb')
+    Accounts.populate_Table(csv_fp)
 
-    ProcessHTML(Accounts, attachmentsDir)
+    if (not downloaded) and gmailAccount is not (None):
 
-    print "end processing - check temp\\attachments sub directories"
+        # login to gmail account and for a selected emails, extract the attachments
 
-else:
+        ## Remove all files in the working environment
+        if EmailProcess:
+            print >> sys.stderr, 'parameters parsed %s, %s, %s, %r' % (gmailAccount, Gpwd[-3:], Dpwd[-4:], EmailProcess)
+            EraseFiles(emailsDir)
 
-    # Process the ZIP files
-    ProcessZips(zipsDir, downloadedDir)
-    # process downloaded files
-    ProcessHTML(Accounts, downloadedDir)
-    print "end processing - check temp\\downloaded sub directories"
+            if DetachEmails(gmailAccount, Gpwd, workingDir + "\\emails", condition=[]):
+                print >> sys.stderr, 'email logout'
+            else:
+                print >> sys.stderr, 'Processing aborted'
+                exit(1)
 
-exit(0)
+        # each email attachment which is a PDF file, has its own attachment, usually HTML.
+        # extract those
+        EraseFiles(attachmentsDir)
+        files = [f for f in os.listdir(emailsDir)]
+        for f in files:
+            extractembedded(f, password=Dpwd, extractdir=attachmentsDir, emailsDir=emailsDir)
 
-# Open each file, and if approved - move to target folder based on account name
+        print >> sys.stderr, 'attachment extracted'
+        # for each HTML - parse the file, identify the account and date, and rename the file accordingly
+
+        ProcessHTML(Accounts, attachmentsDir)
+
+        print "end processing - check temp\\attachments sub directories"
+
+    else:
+
+        # Process the ZIP files
+        ProcessZips(zipsDir, downloadedDir)
+        # process downloaded files
+        ProcessHTML(Accounts, downloadedDir)
+        print "end processing - check temp\\downloaded sub directories"
+
+    exit(0)
