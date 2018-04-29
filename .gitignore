@@ -104,7 +104,6 @@ ENV/
 /production
 /source/.idea
 test.py
-/source/*.bat
 workspace.xml
 
 

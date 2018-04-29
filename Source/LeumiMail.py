@@ -37,7 +37,7 @@ LeumiMail
 ### parse and create files to save
 ###
 
-import sys, os
+import sys, os, shutil
 import getpass
 from MrUtils import Table
 from MrGmail import DetachEmails
@@ -143,6 +143,17 @@ if __name__ == '__main__':
         ProcessZips(zipsDir, downloadedDir)
         # process downloaded files
         ProcessHTML(Accounts, downloadedDir)
+        origDir = os.getcwd()
+        os.chdir(downloadedDir)
+        files = [f for f in os.listdir('.') if (os.path.isfile(f) and os.path.splitext(f)[1].lower() == '.html')]
+        for f in files:
+            try:
+                dst = 'Processed//' + f
+                shutil.move(f, 'Processed\\' + f)#move
+            except Exception as e:
+                print >> sys.stderr, 'At cleanup couldn"t move from %s' % (f)
+
+
         print "end processing - check temp\\downloaded sub directories"
 
     exit(0)

@@ -8,9 +8,11 @@ from shutil import copyfile
 from MrUtils import Table
 import pathlib
 
+
 def ProcessHTML(Accounts, noticesDir):
     origDir = os.getcwd()
     os.chdir(noticesDir)
+    Save_all = False
     files = [f for f in os.listdir('.') if os.path.isfile(f)]  # exclude directories
     for f in files:
         if (pathlib.Path(f).suffix).lower()[1:] == 'html':
@@ -26,9 +28,15 @@ def ProcessHTML(Accounts, noticesDir):
                     ordinal = 0
                     filename_base = pathlib.Path(f).stem.lower()
                 DisplayText = "Account: {0} \nDate: {1}".format(acc_name, date_pref)
-                webbrowser.open(f, new=0)
-                response = pymsgbox.confirm(text=DisplayText, title='Confirm to save',
-                                            buttons=['Save', 'Ignore', 'Mark'])
+                if not Save_all:
+                    webbrowser.open(f, new=0)
+                    response = pymsgbox.confirm(text=DisplayText, title='Confirm to save',
+                                            buttons=['Save', 'Ignore', 'Mark', 'Save All'])
+                    if response == 'Save All':
+                        Save_all = True
+                        response = 'Save'
+                else:
+                    response = 'Save'
                 if response == "Save" or response == "Mark":
                     if not os.path.exists(acc_name):
                             os.makedirs(acc_name)
@@ -37,12 +45,16 @@ def ProcessHTML(Accounts, noticesDir):
                     else:
                         newF = '{0} {1}'.format(date_pref, filename_base)
                     while os.path.exists(os.path.join(acc_name, '{0}.html'.format(newF))):
-                        print >> sys.stderr, 'Target file %s exists. Creating it again with ordinal' % newF.decode('cp1255')
+                        try:
+                            print >> sys.stderr, 'Target file %s exists. Creating it again with ordinal' % newF
+                        except Exception, e:
+                            print >> sys.stderr, '%s Target file %s exists. Creating it again with ordinal' % (str(e), newF)
                         ordinal = str(int(ordinal) + 1)
                         if filename_base:
                             newF = '{0} {1} {2}.html'.format(date_pref, ordinal, filename_base)
                         else:
                             newF = '{0} {1}'.format(date_pref, ordinal)
+
                         if int(ordinal) > 9:
                             print >> sys.stderr, 'Target name range exists for %s, ordinal %s in %s' % (
                                 f, ordinal, acc_name)
@@ -56,14 +68,14 @@ def ProcessHTML(Accounts, noticesDir):
                         copyfile(f, os.path.join(acc_name, newF))
                             # print >> sys.stderr, 'copyfile from %s to %s in %s' % (f, newF, acc_name)
                     except Exception as e:
-                            print >> sys.stderr, 'Couldn"t copy from %s to %s in %s' % (f.decode('cp1255'), newF.decode('cp1255'), acc_name)
+                            print >> sys.stderr, 'Couldn"t copy from %s to %s in %s' % (f, newF, acc_name)
 
                 else:
-                     print >> sys.stderr, 'You asked not to save  %s' % f.decode('cp1255')
+                     print >> sys.stderr, 'You asked not to save  %s' % f
             else:
-                print >> sys.stderr, "Parsing of %s failed" % f.decode('cp1255')
+                print >> sys.stderr, "Parsing of %s failed" % f
         else: #not HTML
-            print 'Not a HTML %s' % f.decode('cp1255')
+            print 'Not a HTML %s' % f
     os.chdir(origDir)
     return
 
