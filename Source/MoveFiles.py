@@ -1,0 +1,67 @@
+# -*- coding: utf-8 -*-
+
+"""
+LeumiMail move files to destination
+
+    Move the files  from the project directory to the target folders
+
+
+
+"""
+
+
+import sys, os, shutil
+from MrUtils import Table
+import argparse
+
+
+def moveFiles(src, dst):
+    oDir = os.getcwd()
+    os.chdir(src)
+    files = [f for f in os.listdir('.') if (os.path.isfile(f) and os.path.splitext(f)[1].lower() == '.html')]
+    for f in files:
+        try:
+            print 'Copying from %s, %s to %s '% (src, f, dst + '\\' + f)  # move
+            shutil.move(f, dst + '\\' + f)  # move
+        except Exception as e:
+            print >> sys.stderr, 'Couldn"t move %s %s' % (src, f)
+    os.chdir(oDir)
+
+### Usage MoveFiles.py CSV-file
+parser = argparse.ArgumentParser(description='Copy Leumi notifications to target folders')
+parser.add_argument('CSVfile', metavar='CSVfile', type=str,
+                    help='The CSV file containing all the folders')
+parser.add_argument('-D', dest='Drive', action='store',
+                    help='G Drive local location')
+
+
+if __name__ == '__main__':
+
+    print 'Move Files for Leumi'   #update release number
+
+    MyArgs = vars(parser.parse_args())
+
+    # create variables
+    locals().update(MyArgs)
+
+    workingDir = os.path.abspath('..\\temp')  # directory where to save attachments (default: current)
+    downloadedDir = os.path.abspath(workingDir + "\\downloaded")
+    if CSVfile<>'':
+        accountsFile = CSVfile
+    else:
+        accountsFile = "ListOfAccounts.csv"
+
+    # Create the accounts table
+    Accounts = Table()
+    csv_fp = open(accountsFile, 'rb')
+    Accounts.populate_Table(csv_fp)
+
+    origDir = os.getcwd()
+    os.chdir(downloadedDir)
+
+    for j in Accounts:
+        moveFiles(j['ShortName'], Drive + '\\' + j['TargetFolder'])
+
+    print "end processing"
+
+    exit(0)

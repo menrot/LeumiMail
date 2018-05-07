@@ -105,7 +105,7 @@ if __name__ == '__main__':
 
     # Create the accounts table
     Accounts = Table()
-    csv_fp = open('ListOfAccounts.csv', 'rb')
+    csv_fp = open(accountsFile, 'rb')
     Accounts.populate_Table(csv_fp)
 
     if (not downloaded) and gmailAccount is not (None):
