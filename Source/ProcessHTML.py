@@ -82,18 +82,18 @@ def ProcessHTML(Accounts, noticesDir):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) <1:
-        print "usage ProcessHTML"
-        exit(1)
+    workingDir = '..\\temp'  # directory where to save attachments (default: current)
+    emailsDir = workingDir + "\\emails"
+    noticesDir = workingDir + "\\attachments"
+    downloadedDir = workingDir + "\\downloaded"
+    accountsFile = "ListOfAccounts.csv"
+
+    Accounts = Table()
+    csv_fp = open(accountsFile, 'rb')
+    Accounts.populate_Table(csv_fp)
+
+    if len(sys.argv) == 2: # process from downloadedDir
+        ProcessHTML(Accounts, downloadedDir)
     else:
-        workingDir = '..\\temp'  # directory where to save attachments (default: current)
-        emailsDir = workingDir + "\\emails"
-        noticesDir = workingDir + "\\attachments"
-        accountsFile = "ListOfAccounts.csv"
-
-        Accounts = Table()
-        csv_fp = open(accountsFile, 'rb')
-        Accounts.populate_Table(csv_fp)
-
         ProcessHTML(Accounts, noticesDir)
 
