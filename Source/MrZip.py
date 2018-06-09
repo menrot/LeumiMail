@@ -6,7 +6,8 @@ import os, sys
 def ProcessZips(zipsDir, downloadedDir):
     origDir = os.getcwd()
     os.chdir(zipsDir)
-    files = [f for f in os.listdir('.') if (os.path.isfile(f) and os.path.splitext(f)[1].lower() == '.zip')]  # exclude directories and include only zip extension
+    files = [f for f in os.listdir('.') if (os.path.isfile(f) and \
+                (os.path.splitext(f)[1].lower() == '.zip') and ('archive' in os.path.splitext(f)[0].lower()) )]  # exclude directories and include only zip extension with archive in file name
     for f in files:
         if zipfile.is_zipfile(f):
             zf = zipfile.ZipFile(f, 'r')
