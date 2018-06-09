@@ -103,6 +103,7 @@ ENV/
 /temp
 /production
 /source/.idea
+/.idea
 test.py
 workspace.xml
 
