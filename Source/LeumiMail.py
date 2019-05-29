@@ -3,7 +3,7 @@
 """
 LeumiMail
 
-    Release V4.0
+    Release V4.3
     This module is to parse and organize notices from Leumi
 
     There are two main operation modes:
@@ -56,7 +56,7 @@ def EraseFiles(mydir):
 
 
 ### Usage LeumiMail Gmail-username Gmail-password PDF-passport [NoEmail]
-parser = argparse.ArgumentParser(description='Process Leumi email from Gmail')
+parser = argparse.ArgumentParser(description='Process Leumi messages')
 #parser.add_argument('gmailAccount', metavar='gmailAccount', type=str,
 #                    help='the gmail account having the Leumi email in its Inbox')
 parser.add_argument('-e', dest='gmailAccount', action='store',
@@ -75,7 +75,7 @@ parser.add_argument('-Z', dest='zipInp', action='store',
 
 if __name__ == '__main__':
 
-    print ('LeumiMail Release 4.0')   #update release number
+    print ('LeumiMail Release 4.3')   #update release number
 
     MyArgs = vars(parser.parse_args())
 

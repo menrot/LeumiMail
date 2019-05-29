@@ -8,7 +8,7 @@ Documentation can be seen using PYDOC
 
 ## Release History
 	2018-04-28 **Release 4.0** Zip file decompressing and good development practices
-	2019-05-29 **Release 4.1** Port existing code to Python 3
+	2019-05-29 **Release 4.3** Port existing code to Python 3
 
 ## Usage ##
 
