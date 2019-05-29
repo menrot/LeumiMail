@@ -22,7 +22,8 @@ class Table (list):
 
     def lookup_Table(self, **kw):
         for row in self:
-            for k,v in kw.iteritems():
+            #2 for k,v in kw.iteritems():
+            for k, v in kw.items():
                 if row[k] != str(v): break
             else:
                 return row

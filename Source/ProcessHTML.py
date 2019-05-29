@@ -46,9 +46,9 @@ def ProcessHTML(Accounts, noticesDir):
                         newF = '{0} {1}'.format(date_pref, filename_base)
                     while os.path.exists(os.path.join(acc_name, '{0}.html'.format(newF))):
                         try:
-                            print >> sys.stderr, 'Target file %s exists. Creating it again with ordinal' % newF
-                        except Exception, e:
-                            print >> sys.stderr, '%s Target file %s exists. Creating it again with ordinal' % (str(e), newF)
+                            print ('Target file %s exists. Creating it again with ordinal' % newF, file=sys.stderr)
+                        except (Exception, e):
+                            print  ('%s Target file %s exists. Creating it again with ordinal' % (str(e), newF), file=sys.stderr)
                         ordinal = str(int(ordinal) + 1)
                         if filename_base:
                             newF = '{0} {1} {2}.html'.format(date_pref, ordinal, filename_base)
@@ -56,8 +56,8 @@ def ProcessHTML(Accounts, noticesDir):
                             newF = '{0} {1}'.format(date_pref, ordinal)
 
                         if int(ordinal) > 9:
-                            print >> sys.stderr, 'Target name range exists for %s, ordinal %s in %s' % (
-                                f, ordinal, acc_name)
+                            print ('Target name range exists for %s, ordinal %s in %s' % (
+                                f, ordinal, acc_name), file=sys.stderr)
                             ordinal = 'check this one'
                             break
 
@@ -66,16 +66,16 @@ def ProcessHTML(Accounts, noticesDir):
                     newF = '{0}.html'.format(newF)
                     try:
                         copyfile(f, os.path.join(acc_name, newF))
-                            # print >> sys.stderr, 'copyfile from %s to %s in %s' % (f, newF, acc_name)
+                            # print ('copyfile from %s to %s in %s' % (f, newF, acc_name), file=sys.stderr)
                     except Exception as e:
-                            print >> sys.stderr, 'Couldn"t copy from %s to %s in %s' % (f, newF, acc_name)
+                            print ('Couldn"t copy from %s to %s in %s' % (f, newF, acc_name), file=sys.stderr)
 
                 else:
-                     print >> sys.stderr, 'You asked not to save  %s' % f
+                     print ('You asked not to save  %s' % f, file=sys.stderr)
             else:
-                print >> sys.stderr, "Parsing of %s failed" % f
+                print ("Parsing of %s failed" % f, file=sys.stderr)
         else: #not HTML
-            print 'Not a HTML %s' % f
+            print ('Not a HTML %s' % f)
     os.chdir(origDir)
     return
 

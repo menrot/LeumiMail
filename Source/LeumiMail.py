@@ -75,7 +75,7 @@ parser.add_argument('-Z', dest='zipInp', action='store',
 
 if __name__ == '__main__':
 
-    print 'LeumiMail Release 4.0'   #update release number
+    print ('LeumiMail Release 4.0')   #update release number
 
     MyArgs = vars(parser.parse_args())
 
@@ -105,7 +105,7 @@ if __name__ == '__main__':
 
     # Create the accounts table
     Accounts = Table()
-    csv_fp = open(accountsFile, 'rb')
+    csv_fp = open(accountsFile, 'rt')
     Accounts.populate_Table(csv_fp)
 
     if (not downloaded) and gmailAccount is not (None):
@@ -114,13 +114,13 @@ if __name__ == '__main__':
 
         ## Remove all files in the working environment
         if EmailProcess:
-            print >> sys.stderr, 'parameters parsed %s, %s, %s, %r' % (gmailAccount, Gpwd[-3:], Dpwd[-4:], EmailProcess)
+            print  ('parameters parsed %s, %s, %s, %r' % (gmailAccount, Gpwd[-3:], Dpwd[-4:], EmailProcess), file=sys.stderr)
             EraseFiles(emailsDir)
 
             if DetachEmails(gmailAccount, Gpwd, workingDir + "\\emails", condition=[]):
-                print >> sys.stderr, 'email logout'
+                print ('email logout', file=sys.stderr)
             else:
-                print >> sys.stderr, 'Processing aborted'
+                print  ('Processing aborted', file=sys.stderr)
                 exit(1)
 
         # each email attachment which is a PDF file, has its own attachment, usually HTML.
@@ -130,12 +130,12 @@ if __name__ == '__main__':
         for f in files:
             extractembedded(f, password=Dpwd, extractdir=attachmentsDir, emailsDir=emailsDir)
 
-        print >> sys.stderr, 'attachment extracted'
+        print ('attachment extracted',file=sys.stderr)
         # for each HTML - parse the file, identify the account and date, and rename the file accordingly
 
         ProcessHTML(Accounts, attachmentsDir)
 
-        print "end processing - check temp\\attachments sub directories"
+        print ("end processing - check temp\\attachments sub directories")
 
     else:
 
@@ -151,9 +151,9 @@ if __name__ == '__main__':
                 dst = 'Processed//' + f
                 shutil.move(f, 'Processed\\' + f)#move
             except Exception as e:
-                print >> sys.stderr, 'At cleanup couldn"t move from %s' % (f)
+                print  ('At cleanup couldn"t move from %s' % (f), file = sys.stderr)
 
 
-        print "end processing - check temp\\downloaded sub directories"
+        print ("end processing - check temp\\downloaded sub directories")
 
     exit(0)

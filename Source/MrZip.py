@@ -19,20 +19,21 @@ def ProcessZips(zipsDir, downloadedDir):
                             shutil.copyfileobj(zf.open(fileinfo.filename), outputfile)
                             outputfile.close()
                     except IOError:
-                        print >> sys.stderr, 'Target folder does not exists for file %s' % (fileinfo.filename).decode('cp1255')
+                        print ('Target folder does not exists for file %s' % (fileinfo.filename).decode('cp1255'), file=sys.stderr)
                         pass
 #### NOTE: extract or extracall is not working since file names include hebrew characters
 #            with zipfile.ZipFile(f) as zf:
 #                zf.extractall(downloadedDir)
         else: #not ZIP
-            print >> sys.stderr,'Not a ZIP %s' % f.decode('cp1255')
-        print 'Zipfile %s processed. Consider deleting it' % f.decode('cp1255')
+            print ('Not a ZIP %s' % f.decode('cp1255'), file=sys.stderr)
+        # print ('Zipfile %s processed. Consider deleting it' % f.decode('cp1255'), file=sys.stderr)
+        print ('Zipfile %s processed. Consider deleting it' % f, file=sys.stderr)
     os.chdir(origDir)
     return
 
 if __name__ == '__main__':
     if len(sys.argv) <1:
-        print "usage test.py"
+        print ("usage test.py")
         exit(1)
     else:
         workingDir = '..\\temp'  # directory where to save attachments (default: current)

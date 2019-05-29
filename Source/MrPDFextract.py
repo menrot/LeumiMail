@@ -4,11 +4,11 @@
 # based on dumppdf.py - dump pdf contents in XML format.
 #
 import sys, os.path, re
-from pdfminer.psparser import PSKeyword, PSLiteral, LIT
-from pdfminer.pdfparser import PDFParser
-from pdfminer.pdfdocument import PDFDocument, PDFNoOutlines, PDFXRef, PDFXRefFallback
-from pdfminer.pdftypes import PDFObjectNotFound, PDFValueError
-from pdfminer.pdftypes import PDFStream, PDFObjRef, resolve1, stream_value
+from pdfminer3.psparser import PSKeyword, PSLiteral, LIT
+from pdfminer3.pdfparser import PDFParser
+from pdfminer3.pdfdocument import PDFDocument, PDFNoOutlines, PDFXRef, PDFXRefFallback
+from pdfminer3.pdftypes import PDFObjectNotFound, PDFValueError
+from pdfminer3.pdftypes import PDFStream, PDFObjRef, resolve1, stream_value
 from random import *
 # from pdfminer.pdfpage import PDFPage
 # from pdfminer.utils import isnumber
