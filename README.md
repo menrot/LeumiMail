@@ -8,6 +8,7 @@ Documentation can be seen using PYDOC
 
 ## Release History
 	2018-04-28 **Release 4.0** Zip file decompressing and good development practices
+	2019-05-29 **Release 4.1** Port existing code to Python 3
 
 ## Usage ##
 
@@ -25,14 +26,12 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 
 ### Email notices ###
 
-Leumi stopped this service 
-=======
-### Email notices ###
+​	***!!!**Leumi stopped this service* 
 
-1. Emails are fetched from gmail account
-2. from each email the PDF attachment is fetched and downloaded
-3. from each PDF the embedded files, usually HTML, are extracted
-4. for each html it is parsed and associated with the relevant account and date
+1. ~~Emails are fetched from gmail account~~
+2. ~~from each email the PDF attachment is fetched and downloaded~~
+3. ~~from each PDF the embedded files, usually HTML, are extracted~~
+4. ~~for each html it is parsed and associated with the relevant account and date~~
 
 ### Downloaded notices ###
 
@@ -43,11 +42,11 @@ Leumi stopped this service
 
 1. A CSV file describes the various account
 2. the files are stored in a structure as follows:
- 
+
 	    Script
     	temp /
-    		emails # not used anymore
-    		attachments # not used anymore
+    		~~emails~~ # not used anymore
+    		~~attachments~~ # not used anymore
     		downloaded
 			zips
 

@@ -21,10 +21,10 @@ def moveFiles(src, dst):
     files = [f for f in os.listdir('.') if (os.path.isfile(f) and os.path.splitext(f)[1].lower() == '.html')]
     for f in files:
         try:
-            print 'Copying from %s, %s to %s '% (src, f, dst + '\\' + f)  # move
+            print ('Copying from %s, %s to %s '% (src, f, dst + '\\' + f))  # move
             shutil.move(f, dst + '\\' + f)  # move
         except Exception as e:
-            print >> sys.stderr, 'Couldn"t move %s %s' % (src, f)
+            print ('Couldn"t move %s %s' % (src, f), file=sys.stderr)
     os.chdir(oDir)
 
 ### Usage MoveFiles.py CSV-file
@@ -37,7 +37,7 @@ parser.add_argument('-D', dest='Drive', action='store',
 
 if __name__ == '__main__':
 
-    print 'Move Files for Leumi'   #update release number
+    print ('Move Files for Leumi')   #update release number
 
     MyArgs = vars(parser.parse_args())
 
@@ -62,6 +62,6 @@ if __name__ == '__main__':
     for j in Accounts:
         moveFiles(j['ShortName'], Drive + '\\' + j['TargetFolder'])
 
-    print "end processing"
+    print ("end processing")
 
     exit(0)
