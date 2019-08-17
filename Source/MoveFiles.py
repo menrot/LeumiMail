@@ -46,14 +46,14 @@ if __name__ == '__main__':
 
     workingDir = os.path.abspath('..\\temp')  # directory where to save attachments (default: current)
     downloadedDir = os.path.abspath(workingDir + "\\downloaded")
-    if CSVfile<>'':
+    if CSVfile!='':
         accountsFile = CSVfile
     else:
         accountsFile = "ListOfAccounts.csv"
 
     # Create the accounts table
     Accounts = Table()
-    csv_fp = open(accountsFile, 'rb')
+    csv_fp = open(accountsFile, 'rt')
     Accounts.populate_Table(csv_fp)
 
     origDir = os.getcwd()
