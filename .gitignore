@@ -100,7 +100,7 @@ ENV/
 
 # Project specific
 *.csv
-/temp
+/temp*
 /production
 /source/.idea
 /.idea
