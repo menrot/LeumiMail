@@ -65,7 +65,7 @@ if __name__ == '__main__':
             cust_name, datePrefix = parse_PDF_notice(sys.argv[2], Accounts, sys.argv[1])
             print(cust_name, datePrefix)
         elif len(sys.argv) == 2:  # process the whole folder
-            files = [f for f in os.listdir(sys.argv[1])]  
+            files = [f for f in os.listdir(sys.argv[1])]
             for f in files:
                 if (pathlib.Path(f).suffix).lower()[1:] == 'pdf':
                     cust_name, datePrefix = parse_PDF_notice(f, Accounts, sys.argv[1])

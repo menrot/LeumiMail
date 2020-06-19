@@ -1,14 +1,17 @@
 # LeumiMail
-A utility to open and organize Leumi notification received either by email or by downloading from Leumi site
+A utility to open and organize Leumi notification received  by downloading from Leumi site
+
+This is release 5.0 which:
+1. finaly removes the email option
+2. Adding PDF parsing as Leumi changed that many notices are PDF 
 
 Documentation can be seen using PYDOC
 
-## Note 
-2018 03 13 Leumi discontinued the email service. As such the downloaded option is the only useful one. 
 
 ## Release History
 	2018-04-28 **Release 4.0** Zip file decompressing and good development practices
 	2019-05-29 **Release 4.3** Port existing code to Python 3
+	2020-06-20 **Release 5.0** remove obsolete code and add PDF parsing
 
 ## Usage ##
 
@@ -21,17 +24,9 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 ### Downloaded notices ###
 
 1. The downloaded notices should be copied to the relevant folder
-2. for each html - it is parsed and associated with the relevant account and date
+2. for each html or pdf - it is parsed and associated with the relevant account and date
 
 
-### Email notices ###
-
-​	***!!!**Leumi stopped this service* 
-
-1. ~~Emails are fetched from gmail account~~
-2. ~~from each email the PDF attachment is fetched and downloaded~~
-3. ~~from each PDF the embedded files, usually HTML, are extracted~~
-4. ~~for each html it is parsed and associated with the relevant account and date~~
 
 ### Downloaded notices ###
 
@@ -45,8 +40,6 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 
 	    Script
     	temp /
-    		~~emails~~ # not used anymore
-    		~~attachments~~ # not used anymore
     		downloaded
 			zips
 
