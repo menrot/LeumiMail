@@ -27,12 +27,9 @@ LeumiMail
 
 """
 
-import sys, os, shutil
-import getpass
+import os
 from MrUtils import Table
-from MrGmail import DetachEmails
-from MrPDFextract import extractembedded
-from ProcessHTML import ProcessHTML
+from ProcessNotice import ProcessNotice
 from MrZip import ProcessZips
 import argparse
 
@@ -79,16 +76,10 @@ if __name__ == '__main__':
     # Process the ZIP files
     ProcessZips(zipsDir, downloadedDir)
     # process downloaded files
-    ProcessHTML(Accounts, downloadedDir)
+    ProcessNotice(Accounts, downloadedDir)
+
     origDir = os.getcwd()
     os.chdir(downloadedDir)
-    files = [f for f in os.listdir('.') if (os.path.isfile(f) and os.path.splitext(f)[1].lower() == '.html')]
-    for f in files:
-        try:
-            dst = 'Processed//' + f
-            shutil.move(f, 'Processed\\' + f)  # move
-        except Exception as e:
-            print('At cleanup couldn"t move from %s' % (f), file=sys.stderr)
 
     print("end processing - check temp\\downloaded sub directories")
 

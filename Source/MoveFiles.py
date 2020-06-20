@@ -18,7 +18,9 @@ import argparse
 def moveFiles(src, dst):
     oDir = os.getcwd()
     os.chdir(src)
-    files = [f for f in os.listdir('.') if (os.path.isfile(f) and os.path.splitext(f)[1].lower() == '.html')]
+    files = [f for f in os.listdir('.') if (os.path.isfile(f) and
+                                            (os.path.splitext(f)[1].lower() == '.html'
+                                             or os.path.splitext(f)[1].lower() == '.pdf'))]
     for f in files:
         try:
             print ('Copying from %s, %s to %s '% (src, f, dst + '\\' + f))  # move

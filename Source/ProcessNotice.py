@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import sys, os
+import sys, os, shutil
 import webbrowser
 import pymsgbox
 from shutil import copyfile
@@ -14,6 +14,7 @@ def ProcessNotice(Accounts, noticesDir):
     origDir = os.getcwd()
     os.chdir(noticesDir)
     Save_all = False
+    files_processed = []
     files = [f for f in os.listdir('.') if os.path.isfile(f)]  # exclude directories
     for f in files:
         if (pathlib.Path(f).suffix).lower()[1:] == 'html':
@@ -29,15 +30,11 @@ def ProcessNotice(Accounts, noticesDir):
 
         if not (acc_name == "Not Found" or date_pref == "00000000"):
             # It is a standard notice
-            ordinal = f.find("Attachment")
-            if ordinal > 0:
-                ordinal = f[ordinal + 11:ordinal + 12]
-                filename_base = False
-            else:
-                # append to file name, dont replace  the name
-                ordinal = 0
-                filename_base = pathlib.Path(f).stem.lower()
-                DisplayText = "Account: {0} \nDate: {1}".format(acc_name, date_pref)
+
+            # append to file name, dont replace  the name
+            ordinal = 0
+            filename_base = pathlib.Path(f).stem.lower()
+            DisplayText = "Account: {0} \nDate: {1}".format(acc_name, date_pref)
             if not Save_all:
                 webbrowser.open(f, new=0)
                 response = pymsgbox.confirm(text=DisplayText, title='Confirm to save',
@@ -78,6 +75,7 @@ def ProcessNotice(Accounts, noticesDir):
                 try:
                     copyfile(f, os.path.join(acc_name, newF))
                     # print ('copyfile from %s to %s in %s' % (f, newF, acc_name), file=sys.stderr)
+                    files_processed.append(f)  # to move it at the end of processing
                 except Exception as e:
                     print('Couldn"t copy from %s to %s in %s' % (f, newF, acc_name), file=sys.stderr)
 
@@ -85,6 +83,16 @@ def ProcessNotice(Accounts, noticesDir):
                 print('You asked not to save  %s' % f, file=sys.stderr)
         else:
             print("Parsing of %s failed" % f, file=sys.stderr)
+
+    # kill acrobat reader
+    os.system("taskkill /im AcroRd32.exe /f")
+
+    # move all successfully processed files to processed
+    for f in files_processed:
+        try:
+            shutil.move(f, 'Processed\\' + f)  # move
+        except Exception as e:
+            print('At cleanup couldn"t move from %s' % (f), file=sys.stderr)
 
     os.chdir(origDir)
     return
@@ -100,3 +108,5 @@ if __name__ == '__main__':
     Accounts.populate_Table(csv_fp)
 
     ProcessNotice(Accounts, downloadedDir)
+
+
