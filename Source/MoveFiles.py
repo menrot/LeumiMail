@@ -23,10 +23,10 @@ def moveFiles(src, dst):
                                              or os.path.splitext(f)[1].lower() == '.pdf'))]
     for f in files:
         try:
-            print ('Copying from %s, %s to %s '% (src, f, dst + '\\' + f))  # move
+            print('Moving from %s, %s to %s '% (src, f, dst + '\\' + f))  # move
             shutil.move(f, dst + '\\' + f)  # move
         except Exception as e:
-            print ('Couldn"t move %s %s' % (src, f), file=sys.stderr)
+            print('Couldn"t move %s %s because %s' % (src, f, e), file=sys.stderr)
     os.chdir(oDir)
 
 ### Usage MoveFiles.py CSV-file

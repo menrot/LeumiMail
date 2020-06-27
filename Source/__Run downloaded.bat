@@ -5,3 +5,4 @@ echo ***** Ctrl^C if want to abort or SPACE to move files to fnal destination
 pause
 python movefiles.py ListOfAccounts.csv -D="D:\Users\Menashe\mG Drive" 1>LeumiMailMove.log 2>&1
 type LeumiMailMove.log
+pause

@@ -85,7 +85,8 @@ def ProcessNotice(Accounts, noticesDir):
             print("Parsing of %s failed" % f, file=sys.stderr)
 
     # kill acrobat reader
-    os.system("taskkill /im AcroRd32.exe /f")
+    if os.system("taskkill /im AcroRd32.exe /f") != 0:
+        print('Killig Acrobat failed', file=sys.stderr)
 
     # move all successfully processed files to processed
     for f in files_processed:
