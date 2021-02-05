@@ -1,7 +1,7 @@
 # LeumiMail
 A utility to open and organize Leumi notification received  by downloading from Leumi site
 
-This is release 5.0 which:
+This is release 5.x which:
 1. finaly removes the email option
 2. Adding PDF parsing as Leumi changed that many notices are PDF 
 
@@ -12,6 +12,7 @@ Documentation can be seen using PYDOC
 	2018-04-28 **Release 4.0** Zip file decompressing and good development practices
 	2019-05-29 **Release 4.3** Port existing code to Python 3
 	2020-06-20 **Release 5.0** remove obsolete code and add PDF parsing
+	2021-02-05 **Release 5.1** minor fixes in printing messages
 
 ## Usage ##
 
