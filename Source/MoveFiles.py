@@ -24,7 +24,7 @@ def moveFiles(src, dst):
         try:
             d = (dst + '\\' + f_s).encode('UTF-8')
             f = f_s.encode('UTF-8')
-            print('Moving from %s, %s to %s ' % (src, f, d))  # move
+            ## print('Moving from %s, %s to %s ' % (src, f, d))  # move
             shutil.move(f, d)  # move
         except Exception as e:
             print('Couldn"t move %s %s because %s' % (src, f, e), file=sys.stderr)

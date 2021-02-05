@@ -85,15 +85,18 @@ def ProcessNotice(Accounts, noticesDir):
             print("Parsing of %s failed" % f, file=sys.stderr)
 
     # kill acrobat reader
-    if os.system("taskkill /im AcroRd32.exe /f") != 0:
-        print('Killig Acrobat failed', file=sys.stderr)
+    if files:
+        if os.system("taskkill /im AcroRd32.exe /f") != 0:
+            print('Killig Acrobat failed', file=sys.stderr)
+    else:
+        print('No emails downloaded', file=sys.stderr)
 
     # move all successfully processed files to processed
     for f in files_processed:
         try:
             shutil.move(f, 'Processed\\' + f)  # move
         except Exception as e:
-            print('At cleanup couldn"t move from %s' % (f), file=sys.stderr)
+            print('At cleanup couldn"t move from %s because of %s' % (f, e,), file=sys.stderr)
 
     os.chdir(origDir)
     return

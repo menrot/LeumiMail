@@ -51,7 +51,7 @@ parser.add_argument('-Z', dest='zipInp', action='store',
 
 if __name__ == '__main__':
 
-    print('LeumiMail Release 5.0')  # update release number
+    print('LeumiMail Release 5.1')  # update release number
 
     MyArgs = vars(parser.parse_args())
 
