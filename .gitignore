@@ -101,10 +101,12 @@ ENV/
 # Project specific
 *.csv
 /temp*
+./temp*
+/source/temp/
 /production
 /source/.idea
 /.idea
 test.py
 workspace.xml
-
+desktop.ini
 

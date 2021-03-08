@@ -47,7 +47,7 @@ if __name__ == '__main__':
     # create variables
     locals().update(MyArgs)
 
-    workingDir = os.path.abspath('..\\temp')  # directory where to save attachments (default: current)
+    workingDir = os.path.abspath('.\\temp')  # directory where to save attachments (default: current)
     downloadedDir = os.path.abspath(workingDir + "\\downloaded")
     if CSVfile != '':
         accountsFile = CSVfile

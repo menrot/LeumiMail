@@ -10,7 +10,7 @@ from parse_PDF_notice import *
 from parse_HTML_notice import *
 
 
-def ProcessNotice(Accounts, noticesDir):
+def ProcessNotice(Accounts, noticesDir, bank):
     origDir = os.getcwd()
     os.chdir(noticesDir)
     Save_all = False
@@ -22,7 +22,7 @@ def ProcessNotice(Accounts, noticesDir):
             acc_name, date_pref = parse_HTML_notice(f, Accounts, '.')
         elif (pathlib.Path(f).suffix).lower()[1:] == 'pdf':
             Ext = 'pdf'
-            acc_name, date_pref = parse_PDF_notice(f, Accounts, '.')
+            acc_name, date_pref = parse_PDF_notice(f, Accounts, '.', bank)
         else:
             # not HTML neither PDF
             print('Not a standard notice file %s' % f)

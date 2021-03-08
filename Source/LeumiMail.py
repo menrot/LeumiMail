@@ -32,6 +32,15 @@ from MrUtils import Table
 from ProcessNotice import ProcessNotice
 from MrZip import ProcessZips
 import argparse
+from enum import Enum
+
+
+class BankEnum(Enum):
+    """
+    ENUM to hold the allowed values for banks
+    """
+    Leumi: int = 0
+    Union: int = 1
 
 
 # Erase all files in a directory
@@ -48,17 +57,20 @@ parser.add_argument('-downloaded', dest='downloaded', action='store_true',  # By
                     help='When set-process messages that were donwloaded to downlowd folder')
 parser.add_argument('-Z', dest='zipInp', action='store',
                     help='Folder of ZIP files')
+parser.add_argument('-B', dest='bank', action='store',
+                    help='bank (Leumi or Union')
+
 
 if __name__ == '__main__':
 
-    print('LeumiMail Release 5.1')  # update release number
+    print('LeumiMail Release 5.2')  # update release number
 
     MyArgs = vars(parser.parse_args())
 
     # create variables
     locals().update(MyArgs)
 
-    workingDir = os.path.abspath('..\\temp')  # directory where to save data files (default: current)
+    workingDir = os.path.abspath('.\\temp')  # directory where to save data files (default: current)
     downloadedDir = os.path.abspath(workingDir + "\\downloaded")
     accountsFile = "ListOfAccounts.csv"
 
@@ -68,6 +80,11 @@ if __name__ == '__main__':
     else:
         zipsDir = zipInp
 
+    if not bank in ('Leumi', 'Union'):
+        print('Bank not specified')
+        exit(1)
+
+
     # Create the accounts table
     Accounts = Table()
     csv_fp = open(accountsFile, 'rt')
@@ -76,7 +93,7 @@ if __name__ == '__main__':
     # Process the ZIP files
     ProcessZips(zipsDir, downloadedDir)
     # process downloaded files
-    ProcessNotice(Accounts, downloadedDir)
+    ProcessNotice(Accounts, downloadedDir, bank)
 
     origDir = os.getcwd()
     os.chdir(downloadedDir)

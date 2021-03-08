@@ -8,15 +8,23 @@ import pathlib
 
 
 
-def parse_PDF_notice(file, accounts, workingDir):
+def parse_PDF_notice(file, accounts, workingDir, bank):
     origDir = os.getcwd()
     os.chdir(workingDir)
 
-    regex2 = r'\d\d\-\d\d\d\-(?P<Acc>\d+\/\d\d)(?P<Date>\d\d\/\d\d\/\d\d)'
+    regex2 = r'\d\d\-\d+\-(?P<Acc>\d+\/\d\d)(?P<Date>\d\d\/\d\d\/\d\d)'
     re2 = re.compile(regex2)
 
     short_name = "Not Found"
     datePrefix = "00000000"
+
+    if bank == 'Leumi':
+        bankVal = 24
+    elif bank == 'Union':
+        bankVal = 22
+    else:
+        print('***Error*')
+        return short_name, datePrefix
 
     raw = parser.from_file(file)
 
@@ -31,7 +39,7 @@ def parse_PDF_notice(file, accounts, workingDir):
         loc = safe_text.find('מס. לקוח')
 
         if loc > 0:
-            temp_str = safe_text[loc - 24:loc]
+            temp_str = safe_text[loc - bankVal:loc]
             match = re2.search(temp_str)
             if match:
                 cust_str = match.group('Acc')
@@ -54,20 +62,20 @@ def parse_PDF_notice(file, accounts, workingDir):
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        print("usage parsw_PDF_notice workinDir file")
+        print("usage parse_PDF_notice workinDir file bank")
         exit(1)
     else:
         Accounts = Table()
         csv_fp = open('ListOfAccounts.csv', 'rt')
         Accounts.populate_Table(csv_fp)
 
-        if len(sys.argv) == 3:
-            cust_name, datePrefix = parse_PDF_notice(sys.argv[2], Accounts, sys.argv[1])
+        if len(sys.argv) == 4:
+            cust_name, datePrefix = parse_PDF_notice(sys.argv[2], Accounts, sys.argv[1], sys.argv[3])
             print(cust_name, datePrefix)
-        elif len(sys.argv) == 2:  # process the whole folder
+        elif len(sys.argv) == 3:  # process the whole folder
             files = [f for f in os.listdir(sys.argv[1])]
             for f in files:
                 if (pathlib.Path(f).suffix).lower()[1:] == 'pdf':
-                    cust_name, datePrefix = parse_PDF_notice(f, Accounts, sys.argv[1])
+                    cust_name, datePrefix = parse_PDF_notice(f, Accounts, sys.argv[1], sys.argv[2])
                     print(cust_name, datePrefix, f)
         exit(0)
