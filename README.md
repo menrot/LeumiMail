@@ -13,6 +13,7 @@ Documentation can be seen using PYDOC
 	2019-05-29 **Release 4.3** Port existing code to Python 3
 	2020-06-20 **Release 5.0** remove obsolete code and add PDF parsing
 	2021-02-05 **Release 5.1** minor fixes in printing messages
+	2021-03-08 **Release 5.2** Support for Union bank PDF. Added command line arg. changed folder structure
 
 ## Usage ##
 
@@ -40,7 +41,7 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 2. the files are stored in a structure as follows:
 
 	    Script
-    	temp /
-    		downloaded
-			zips
+			temp /
+				downloaded
+				zips
 
