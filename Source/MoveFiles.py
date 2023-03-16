@@ -40,7 +40,7 @@ parser.add_argument('-D', dest='Drive', action='store',
 
 if __name__ == '__main__':
 
-    print('Move Files for Leumi')  # update release number
+    print('Move Files for Leumi / Union Bank')  # update release number
 
     MyArgs = vars(parser.parse_args())
 

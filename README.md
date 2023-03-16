@@ -2,7 +2,7 @@
 A utility to open and organize Leumi notification received  by downloading from Leumi site
 
 This is release 5.x which:
-1. finaly removes the email option
+1. Finally removes the email option
 2. Adding PDF parsing as Leumi changed that many notices are PDF 
 
 Documentation can be seen using PYDOC
@@ -45,3 +45,11 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 				downloaded
 				zips
 
+## Build Guidelines ###
+
+1. Java is required, in order to run tika server.
+2. Major packages used:
+   1. beatifulsoap
+   2. tika
+
+See the requirements.txt file.

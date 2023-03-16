@@ -6,8 +6,6 @@ from MrUtils import Table
 import pathlib
 
 
-
-
 def parse_PDF_notice(file, accounts, workingDir, bank):
     origDir = os.getcwd()
     os.chdir(workingDir)

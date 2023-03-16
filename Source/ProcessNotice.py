@@ -86,8 +86,8 @@ def ProcessNotice(Accounts, noticesDir, bank):
 
     # kill acrobat reader
     if files:
-        if os.system("taskkill /im AcroRd32.exe /f") != 0:
-            print('Killig Acrobat failed', file=sys.stderr)
+        if os.system("taskkill /im FoxitPDFReader.exe /f") != 0:  # adjust to reader used AcroRd32.exe
+            print('Killig PDF reader failed', file=sys.stderr)
     else:
         print('No emails downloaded', file=sys.stderr)
 
@@ -111,6 +111,6 @@ if __name__ == '__main__':
     csv_fp = open(accountsFile, 'rt')
     Accounts.populate_Table(csv_fp)
 
-    ProcessNotice(Accounts, downloadedDir)
+    ProcessNotice(Accounts, downloadedDir, 'Leumi')
 
 

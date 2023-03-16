@@ -3,7 +3,7 @@
 """
 LeumiMail
 
-    Release V5.0
+    Release V6.0
     This module is to parse and organize notices from Leumi
 
     The program relies on downloading the internal Leumi inbox.
@@ -54,7 +54,7 @@ def EraseFiles(mydir):
 parser = argparse.ArgumentParser(description='Process Leumi messages')
 
 parser.add_argument('-downloaded', dest='downloaded', action='store_true',  # By default - not downloaded
-                    help='When set-process messages that were donwloaded to downlowd folder')
+                    help='When set-process messages that were donwloaded to downlowded folder')
 parser.add_argument('-Z', dest='zipInp', action='store',
                     help='Folder of ZIP files')
 parser.add_argument('-B', dest='bank', action='store',
@@ -63,7 +63,7 @@ parser.add_argument('-B', dest='bank', action='store',
 
 if __name__ == '__main__':
 
-    print('LeumiMail Release 5.2')  # update release number
+    print('LeumiMail Release 6.0')  # update release number
 
     MyArgs = vars(parser.parse_args())
 
