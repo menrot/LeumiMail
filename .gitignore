@@ -110,6 +110,6 @@ test.py
 workspace.xml
 desktop.ini
 /sourcearchive
-_*.bat
+__*.bat
 
 
