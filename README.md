@@ -1,12 +1,10 @@
 # LeumiMail
 A utility to open and organize Leumi notification received  by downloading from Leumi site
 
-This is release 5.x which:
-1. Finally removes the email option
-2. Adding PDF parsing as Leumi changed that many notices are PDF 
+This is release 6.1 which:
+1. Upgrade to python 3.12
 
 Documentation can be seen using PYDOC
-
 
 ## Release History
 	2018-04-28 **Release 4.0** Zip file decompressing and good development practices
@@ -14,6 +12,8 @@ Documentation can be seen using PYDOC
 	2020-06-20 **Release 5.0** remove obsolete code and add PDF parsing
 	2021-02-05 **Release 5.1** minor fixes in printing messages
 	2021-03-08 **Release 5.2** Support for Union bank PDF. Added command line arg. changed folder structure
+	           **Release 5.3** Removing the email option and adding parsing PDF.
+	2024-03-11 **Release 6.1** Upgrade to python 3.12
 
 ## Usage ##
 
@@ -27,13 +27,6 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 
 1. The downloaded notices should be copied to the relevant folder
 2. for each html or pdf - it is parsed and associated with the relevant account and date
-
-
-
-### Downloaded notices ###
-
-1. The downloaded notices should be copied to the relevant folder
-2. for each html - it is parsed and associated with the relevant account and date
 
 ## Environment ###
 

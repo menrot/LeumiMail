@@ -11,7 +11,7 @@ LeumiMail
 
     The program receives the following parameters
 
-    -Z [location]   where the zip file exists
+    -Z [location]   where the zip files exists
 
     The folder environment is as follows:
         script
@@ -35,13 +35,15 @@ import argparse
 from enum import Enum
 
 
+'''
+decapitated
 class BankEnum(Enum):
     """
     ENUM to hold the allowed values for banks
     """
     Leumi: int = 0
     Union: int = 1
-
+'''
 
 # Erase all files in a directory
 def EraseFiles(mydir):
@@ -57,8 +59,11 @@ parser.add_argument('-downloaded', dest='downloaded', action='store_true',  # By
                     help='When set-process messages that were donwloaded to downlowded folder')
 parser.add_argument('-Z', dest='zipInp', action='store',
                     help='Folder of ZIP files')
+'''
+decapitated
 parser.add_argument('-B', dest='bank', action='store',
                     help='bank (Leumi or Union')
+'''
 
 
 if __name__ == '__main__':
