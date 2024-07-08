@@ -85,9 +85,6 @@ if __name__ == '__main__':
     else:
         zipsDir = zipInp
 
-    if not bank in ('Leumi', 'Union'):
-        print('Bank not specified')
-        exit(1)
 
 
     # Create the accounts table
@@ -98,7 +95,7 @@ if __name__ == '__main__':
     # Process the ZIP files
     ProcessZips(zipsDir, downloadedDir)
     # process downloaded files
-    ProcessNotice(Accounts, downloadedDir, bank)
+    ProcessNotice(Accounts, downloadedDir, 0)
 
     origDir = os.getcwd()
     os.chdir(downloadedDir)

@@ -92,6 +92,8 @@ def ProcessNotice(Accounts, noticesDir, bank):
         print('No emails downloaded', file=sys.stderr)
 
     # move all successfully processed files to processed
+    if not os.path.exists('Processed\\'):
+        os.makedirs('Processed\\')
     for f in files_processed:
         try:
             shutil.move(f, 'Processed\\' + f)  # move
@@ -111,6 +113,6 @@ if __name__ == '__main__':
     csv_fp = open(accountsFile, 'rt')
     Accounts.populate_Table(csv_fp)
 
-    ProcessNotice(Accounts, downloadedDir, 'Leumi')
+    ProcessNotice(Accounts, downloadedDir, 0)
 
 

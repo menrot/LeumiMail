@@ -16,12 +16,12 @@ def parse_PDF_notice(file, accounts, workingDir, bank):
     short_name = "Not Found"
     datePrefix = "00000000"
 
-    if bank == 'Leumi':
+    if bank == 0:
         bankVal = 24
-    elif bank == 'Union':
-        bankVal = 22
+    # elif bank == 'Union':
+    #    bankVal = 22
     else:
-        print('***Error*')
+        print('***Error bank code***')
         return short_name, datePrefix
 
     raw = parser.from_file(file)

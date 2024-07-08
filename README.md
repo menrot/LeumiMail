@@ -42,7 +42,7 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 
 1. Java is required, in order to run tika server.
 2. Major packages used:
-   1. beatifulsoap
+   1. beautifulsoap
    2. tika
 
 See the requirements.txt file.
