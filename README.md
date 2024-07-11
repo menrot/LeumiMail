@@ -1,8 +1,10 @@
 # LeumiMail
 A utility to open and organize Leumi notification received  by downloading from Leumi site
 
-This is release 6.1 which:
+This is release 6.2 which:
 1. Upgrade to python 3.12
+2. Supports new PDF notices format from Leumi
+3. Adds the subject in file name for PDF notices
 
 Documentation can be seen using PYDOC
 
@@ -14,6 +16,7 @@ Documentation can be seen using PYDOC
 	2021-03-08 **Release 5.2** Support for Union bank PDF. Added command line arg. changed folder structure
 	           **Release 5.3** Removing the email option and adding parsing PDF.
 	2024-03-11 **Release 6.1** Upgrade to python 3.12
+	2024-07-11 **Release 6.2** Supports new PDF notices format from Leumi. Adds the subject in file name for PDF notices
 
 ## Usage ##
 

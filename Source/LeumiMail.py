@@ -68,7 +68,7 @@ parser.add_argument('-B', dest='bank', action='store',
 
 if __name__ == '__main__':
 
-    print('LeumiMail Release 6.0')  # update release number
+    print('LeumiMail Release 6.2')  # update release number
 
     MyArgs = vars(parser.parse_args())
 

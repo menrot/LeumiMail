@@ -20,9 +20,10 @@ def ProcessNotice(Accounts, noticesDir, bank):
         if (pathlib.Path(f).suffix).lower()[1:] == 'html':
             Ext = 'html'
             acc_name, date_pref = parse_HTML_notice(f, Accounts, '.')
+            subject = ''
         elif (pathlib.Path(f).suffix).lower()[1:] == 'pdf':
             Ext = 'pdf'
-            acc_name, date_pref = parse_PDF_notice(f, Accounts, '.', bank)
+            acc_name, date_pref, subject = parse_PDF_notice(f, Accounts, '.', bank)
         else:
             # not HTML neither PDF
             print('Not a standard notice file %s' % f)
@@ -34,7 +35,7 @@ def ProcessNotice(Accounts, noticesDir, bank):
             # append to file name, dont replace  the name
             ordinal = 0
             filename_base = pathlib.Path(f).stem.lower()
-            DisplayText = "Account: {0} \nDate: {1}".format(acc_name, date_pref)
+            DisplayText = "Account: {0} \nDate: {1} Subject: {2}".format(acc_name, date_pref, subject)
             if not Save_all:
                 webbrowser.open(f, new=0)
                 response = pymsgbox.confirm(text=DisplayText, title='Confirm to save',
@@ -48,9 +49,9 @@ def ProcessNotice(Accounts, noticesDir, bank):
                 if not os.path.exists(acc_name):
                     os.makedirs(acc_name)
                 if ordinal > 0:
-                    newF = '{0} {1}'.format(date_pref, ordinal)
+                    newF = '{0} {1} {2}'.format(date_pref, ordinal, subject)
                 else:
-                    newF = '{0} {1}'.format(date_pref, filename_base)
+                    newF = '{0} {1} {2}'.format(date_pref, subject, filename_base)
                 while os.path.exists(os.path.join(acc_name, '{0}.{1}'.format(newF, Ext))):
                     try:
                         print('Target file %s exists. Creating it again with ordinal' % newF, file=sys.stderr)
@@ -61,7 +62,7 @@ def ProcessNotice(Accounts, noticesDir, bank):
                     if filename_base:
                         newF = '{0} {1} {2}.html'.format(date_pref, ordinal, filename_base)
                     else:
-                        newF = '{0} {1}'.format(date_pref, ordinal)
+                        newF = '{0} {1} {2}'.format(date_pref, ordinal, subject)
 
                     if int(ordinal) > 9:
                         print('Target name range exists for %s, ordinal %s in %s' % (
