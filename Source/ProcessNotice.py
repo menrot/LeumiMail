@@ -1,119 +1,1 @@
-# -*- coding: utf-8 -*-
-
-import sys, os, shutil
-import webbrowser
-import pymsgbox
-from shutil import copyfile
-from MrUtils import Table
-import pathlib
-from parse_PDF_notice import *
-from parse_HTML_notice import *
-
-
-def ProcessNotice(Accounts, noticesDir, bank):
-    origDir = os.getcwd()
-    os.chdir(noticesDir)
-    Save_all = False
-    files_processed = []
-    files = [f for f in os.listdir('.') if os.path.isfile(f)]  # exclude directories
-    for f in files:
-        if (pathlib.Path(f).suffix).lower()[1:] == 'html':
-            Ext = 'html'
-            acc_name, date_pref = parse_HTML_notice(f, Accounts, '.')
-            subject = ''
-        elif (pathlib.Path(f).suffix).lower()[1:] == 'pdf':
-            Ext = 'pdf'
-            acc_name, date_pref, subject = parse_PDF_notice(f, Accounts, '.', bank)
-        else:
-            # not HTML neither PDF
-            print('Not a standard notice file %s' % f)
-            continue
-
-        if not (acc_name == "Not Found" or date_pref == "00000000"):
-            # It is a standard notice
-
-            # append to file name, dont replace  the name
-            ordinal = 0
-            filename_base = pathlib.Path(f).stem.lower()
-            DisplayText = "Account: {0} \nDate: {1} Subject: {2}".format(acc_name, date_pref, subject)
-            if not Save_all:
-                webbrowser.open(f, new=0)
-                response = pymsgbox.confirm(text=DisplayText, title='Confirm to save',
-                                            buttons=['Save', 'Ignore', 'Mark', 'Save All'])
-                if response == 'Save All':
-                    Save_all = True
-                    response = 'Save'
-            else:  # save_all in effect
-                response = 'Save'
-            if response == "Save" or response == "Mark":
-                if not os.path.exists(acc_name):
-                    os.makedirs(acc_name)
-                if ordinal > 0:
-                    newF = '{0} {1} {2}'.format(date_pref, ordinal, subject)
-                else:
-                    newF = '{0} {1} {2}'.format(date_pref, subject, filename_base)
-                while os.path.exists(os.path.join(acc_name, '{0}.{1}'.format(newF, Ext))):
-                    try:
-                        print('Target file %s exists. Creating it again with ordinal' % newF, file=sys.stderr)
-                    except (Exception, e):
-                        print('%s Target file %s exists. Creating it again with ordinal' % (str(e), newF),
-                              file=sys.stderr)
-                    ordinal = str(int(ordinal) + 1)
-                    if filename_base:
-                        newF = '{0} {1} {2}.html'.format(date_pref, ordinal, filename_base)
-                    else:
-                        newF = '{0} {1} {2}'.format(date_pref, ordinal, subject)
-
-                    if int(ordinal) > 9:
-                        print('Target name range exists for %s, ordinal %s in %s' % (
-                            f, ordinal, acc_name), file=sys.stderr)
-                        ordinal = 'check this one'
-                        break
-
-                if response == "Mark":
-                    newF = '{0} UPDATE NAME'.format(newF)
-                newF = '{0}.{1}'.format(newF, Ext)
-                try:
-                    copyfile(f, os.path.join(acc_name, newF))
-                    # print ('copyfile from %s to %s in %s' % (f, newF, acc_name), file=sys.stderr)
-                    files_processed.append(f)  # to move it at the end of processing
-                except Exception as e:
-                    print('Couldn"t copy from %s to %s in %s' % (f, newF, acc_name), file=sys.stderr)
-
-            else:
-                print('You asked not to save  %s' % f, file=sys.stderr)
-        else:
-            print("Parsing of %s failed" % f, file=sys.stderr)
-
-    # kill PDF reader
-    if files:
-        if os.system("taskkill /im FoxitPDFReader.exe /f") != 0:  # adjust to reader used AcroRd32.exe
-            print('Killing PDF reader failed', file=sys.stderr)
-    else:
-        print('No emails downloaded', file=sys.stderr)
-
-    # move all successfully processed files to processed
-    if not os.path.exists('Processed\\'):
-        os.makedirs('Processed\\')
-    for f in files_processed:
-        try:
-            shutil.move(f, 'Processed\\' + f)  # move
-        except Exception as e:
-            print('At cleanup couldn"t move from %s because of %s' % (f, e,), file=sys.stderr)
-
-    os.chdir(origDir)
-    return
-
-
-if __name__ == '__main__':
-    workingDir = '..\\temp'  # directory where to save attachments (default: current)
-    downloadedDir = workingDir + "\\downloaded"
-    accountsFile = "ListOfAccounts.csv"
-
-    Accounts = Table()
-    csv_fp = open(accountsFile, 'rt')
-    Accounts.populate_Table(csv_fp)
-
-    ProcessNotice(Accounts, downloadedDir, 0)
-
-
+# -*- coding: utf-8 -*-import sys, os, shutilimport webbrowserimport pymsgboxfrom shutil import copyfilefrom MrUtils import Tableimport pathlibfrom parse_PDF_notice import *from parse_HTML_notice import *def ProcessNotice(Accounts, noticesDir, bank):    origDir = os.getcwd()    os.chdir(noticesDir)    Save_all = False    files_processed = []    files = [f for f in os.listdir('.') if os.path.isfile(f)]  # exclude directories    for f in files:        if (pathlib.Path(f).suffix).lower()[1:] == 'html':            Ext = 'html'            acc_name, date_pref = parse_HTML_notice(f, Accounts, '.')            subject = ''        elif (pathlib.Path(f).suffix).lower()[1:] == 'pdf':            Ext = 'pdf'            acc_name, date_pref, subject = parse_PDF_notice(f, Accounts, '.', bank)        else:            # not HTML neither PDF            print('Not a standard notice file %s' % f)            continue        if not (acc_name == "Not Found" or date_pref == "00000000"):            # It is a standard notice            # append to file name, dont replace  the name            ordinal = 0            filename_base = pathlib.Path(f).stem.lower()            DisplayText = "Account: {0} \nDate: {1} Subject: {2}".format(acc_name, date_pref, subject)            if not Save_all:                webbrowser.open(f, new=0)                response = pymsgbox.confirm(text=DisplayText, title='Confirm to save',                                            buttons=['Save', 'Ignore', 'Mark', 'Save All'])                if response == 'Save All':                    Save_all = True                    response = 'Save'            else:  # save_all in effect                response = 'Save'            if response == "Save" or response == "Mark":                if not os.path.exists(acc_name):                    os.makedirs(acc_name)                if ordinal > 0:                    newF = '{0} {1} {2}'.format(date_pref, ordinal, subject)                else:                    newF = '{0} {1} {2}'.format(date_pref, subject, filename_base)                while os.path.exists(os.path.join(acc_name, '{0}.{1}'.format(newF, Ext))):                    try:                        print('Target file %s exists. Creating it again with ordinal' % newF, file=sys.stderr)                    except (Exception, e):                        print('%s Target file %s exists. Creating it again with ordinal' % (str(e), newF),                              file=sys.stderr)                    ordinal = str(int(ordinal) + 1)                    if filename_base:                        newF = '{0} {1} {2}.html'.format(date_pref, ordinal, filename_base)                    else:                        newF = '{0} {1} {2}'.format(date_pref, ordinal, subject)                    if int(ordinal) > 9:                        print('Target name range exists for %s, ordinal %s in %s' % (                            f, ordinal, acc_name), file=sys.stderr)                        ordinal = 'check this one'                        break                if response == "Mark":                    newF = '{0} UPDATE NAME'.format(newF)                newF = '{0}.{1}'.format(newF, Ext)                try:                    copyfile(f, os.path.join(acc_name, newF))                    # print ('copyfile from %s to %s in %s' % (f, newF, acc_name), file=sys.stderr)                    files_processed.append(f)  # to move it at the end of processing                except Exception as e:                    print('Couldn"t copy from %s to %s in %s' % (f, newF, acc_name), file=sys.stderr)            else:                print('You asked not to save  %s' % f, file=sys.stderr)        else:            print("Parsing of %s failed" % f, file=sys.stderr)    # kill PDF reader    if files:        if os.system("taskkill /im FoxitPDFReader.exe /f") != 0:  # adjust to reader used AcroRd32.exe            print('Killing PDF reader failed', file=sys.stderr)    else:        print('No emails downloaded', file=sys.stderr)    # move all successfully processed files to processed    if not os.path.exists('Processed\\'):        os.makedirs('Processed\\')    for f in files_processed:        try:            shutil.move(f, 'Processed\\' + f)  # move        except Exception as e:            print('At cleanup couldn"t move from %s because of %s' % (f, e,), file=sys.stderr)    os.chdir(origDir)    returnif __name__ == '__main__':    workingDir = '..\\temp'  # directory where to save attachments (default: current)    downloadedDir = workingDir + "\\downloaded"    accountsFile = "ListOfAccounts.csv"    Accounts = Table()    csv_fp = open(accountsFile, 'rt')    Accounts.populate_Table(csv_fp)    ProcessNotice(Accounts, downloadedDir, 0)
