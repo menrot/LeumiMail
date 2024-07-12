@@ -85,10 +85,10 @@ def ProcessNotice(Accounts, noticesDir, bank):
         else:
             print("Parsing of %s failed" % f, file=sys.stderr)
 
-    # kill acrobat reader
+    # kill PDF reader
     if files:
         if os.system("taskkill /im FoxitPDFReader.exe /f") != 0:  # adjust to reader used AcroRd32.exe
-            print('Killig PDF reader failed', file=sys.stderr)
+            print('Killing PDF reader failed', file=sys.stderr)
     else:
         print('No emails downloaded', file=sys.stderr)
 

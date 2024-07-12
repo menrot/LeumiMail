@@ -5,6 +5,7 @@ This is release 6.2 which:
 1. Upgrade to python 3.12
 2. Supports new PDF notices format from Leumi
 3. Adds the subject in file name for PDF notices
+4. switched PDF parsing from Tika to pyplumber
 
 Documentation can be seen using PYDOC
 
@@ -46,6 +47,7 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 1. Java is required, in order to run tika server.
 2. Major packages used:
    1. beautifulsoap
-   2. tika
+
+ 
 
 See the requirements.txt file.

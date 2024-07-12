@@ -15,13 +15,15 @@ LeumiMail
 
     The folder environment is as follows:
         script
+        data # holds the actual accounts information
         temp
+            logs
             zips
             downloaded
                 account_1
                 account_2
 
-    In the script folder there has to be a CSV file describing the accounts
+    In the data folder there has to be a CSV file describing the accounts
 
 
 
@@ -34,16 +36,6 @@ from MrZip import ProcessZips
 import argparse
 from enum import Enum
 
-
-'''
-decapitated
-class BankEnum(Enum):
-    """
-    ENUM to hold the allowed values for banks
-    """
-    Leumi: int = 0
-    Union: int = 1
-'''
 
 # Erase all files in a directory
 def EraseFiles(mydir):
@@ -59,16 +51,11 @@ parser.add_argument('-downloaded', dest='downloaded', action='store_true',  # By
                     help='When set-process messages that were donwloaded to downlowded folder')
 parser.add_argument('-Z', dest='zipInp', action='store',
                     help='Folder of ZIP files')
-'''
-decapitated
-parser.add_argument('-B', dest='bank', action='store',
-                    help='bank (Leumi or Union')
-'''
 
 
 if __name__ == '__main__':
 
-    print('LeumiMail Release 6.2')  # update release number
+    print('LeumiMail Release 6.3')  # update release number
 
     MyArgs = vars(parser.parse_args())
 
@@ -77,15 +64,13 @@ if __name__ == '__main__':
 
     workingDir = os.path.abspath('.\\temp')  # directory where to save data files (default: current)
     downloadedDir = os.path.abspath(workingDir + "\\downloaded")
-    accountsFile = "ListOfAccounts.csv"
+    accountsFile = "..\\data\\ListOfAccounts.csv"
 
     # Set parameters
     if zipInp is None:
         zipsDir = os.path.abspath(workingDir + "\\zips")
     else:
         zipsDir = zipInp
-
-
 
     # Create the accounts table
     Accounts = Table()
