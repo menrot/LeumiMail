@@ -18,7 +18,7 @@ Documentation can be seen using PYDOC
 	           **Release 5.3** Removing the email option and adding parsing PDF.
 	2024-03-11 **Release 6.1** Upgrade to python 3.12
 	2024-07-11 **Release 6.2** Supports new PDF notices format from Leumi. Adds the subject in file name for PDF notices. Tika and Java not needed anymore
-
+	2024-10-07 **Release 6.4** date appears in the account line
 ## Usage ##
 
 This utility handles the following use cases:
