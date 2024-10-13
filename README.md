@@ -1,8 +1,8 @@
 # LeumiMail
 A utility to open and organize Leumi notification received  by downloading from Leumi site
 
-This is release 6.2 which:
-1. Upgrade to python 3.12
+This is release 6.5 which:
+1. Upgrade to python 3.13
 2. Supports new PDF notices format from Leumi
 3. Adds the subject in file name for PDF notices
 4. Switched PDF parsing from Tika to pyplumber
@@ -19,6 +19,8 @@ Documentation can be seen using PYDOC
 	2024-03-11 **Release 6.1** Upgrade to python 3.12
 	2024-07-11 **Release 6.2** Supports new PDF notices format from Leumi. Adds the subject in file name for PDF notices. Tika and Java not needed anymore
 	2024-10-07 **Release 6.4** date appears in the account line
+	2024-10-07 **Release 6.5** Upgrade to python 3.13. 
+
 ## Usage ##
 
 This utility handles the following use cases:
@@ -37,8 +39,9 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 1. A CSV file describes the various account
 2. the files are stored in a structure as follows:
 
-	    Script
-			temp /
+	    data
+		Source
+			temp 
 				downloaded
 				zips
 
@@ -47,6 +50,9 @@ While in the Leumi web interface - download the new emails from the inbox. The u
 1. Major packages used:
 	beautifulsoap
 
- 
+2. See the requirements.txt file.
 
-See the requirements.txt file.
+3. TCL installation for python 3.13 requires the following manual changes:
+    - Python installation is C:\Users\<USER>\AppData\Local\Programs\Python\Python313
+    - from the tcl folder in the python installation, copy the tcl8.6 folder to lib folder
+    - from the tcl folder in the python installation, copy the tk8.6 folder to lib/tcl8.6 folder
